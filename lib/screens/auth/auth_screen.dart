@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:open_learning/theme/app_theme.dart';
+import 'package:open_learning/theme/app_colors.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -506,27 +509,25 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'الاسم الكامل',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF1D1D1F),
-          ),
-        ),
+        Text('الاسم الكامل', style: AppTheme.headline),
         const SizedBox(height: 8),
         CupertinoTextField(
           controller: _nameController,
           focusNode: _nameFocusNode,
           placeholder: 'أدخل اسمك الكامل',
+          style: GoogleFonts.cairo(fontSize: 16, color: AppColors.textPrimary),
+          placeholderStyle: GoogleFonts.cairo(
+            fontSize: 16,
+            color: AppColors.textSecondary,
+          ),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: const Color(0xFFF2F2F7),
+            color: AppColors.inputBackground,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color:
                   _nameError != null
-                      ? CupertinoColors.destructiveRed
+                      ? AppColors.textOrange
                       : Colors.transparent,
             ),
           ),
@@ -537,10 +538,7 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
           const SizedBox(height: 4),
           Text(
             _nameError!,
-            style: const TextStyle(
-              color: CupertinoColors.destructiveRed,
-              fontSize: 12,
-            ),
+            style: GoogleFonts.cairo(color: AppColors.textOrange, fontSize: 12),
           ),
         ],
       ],
@@ -551,28 +549,26 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'البريد الإلكتروني',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF1D1D1F),
-          ),
-        ),
+        Text('البريد الإلكتروني', style: AppTheme.headline),
         const SizedBox(height: 8),
         CupertinoTextField(
           controller: _emailController,
           focusNode: _emailFocusNode,
           placeholder: 'أدخل بريدك الإلكتروني',
           keyboardType: TextInputType.emailAddress,
+          style: GoogleFonts.cairo(fontSize: 16, color: AppColors.textPrimary),
+          placeholderStyle: GoogleFonts.cairo(
+            fontSize: 16,
+            color: AppColors.textSecondary,
+          ),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: const Color(0xFFF2F2F7),
+            color: AppColors.inputBackground,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color:
                   _emailError != null
-                      ? CupertinoColors.destructiveRed
+                      ? AppColors.textOrange
                       : Colors.transparent,
             ),
           ),
@@ -597,28 +593,26 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'كلمة المرور',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF1D1D1F),
-          ),
-        ),
+        Text('كلمة المرور', style: AppTheme.headline),
         const SizedBox(height: 8),
         CupertinoTextField(
           controller: _passwordController,
           focusNode: _passwordFocusNode,
           placeholder: 'أدخل كلمة المرور',
           obscureText: !_isPasswordVisible,
+          style: GoogleFonts.cairo(fontSize: 16, color: AppColors.textPrimary),
+          placeholderStyle: GoogleFonts.cairo(
+            fontSize: 16,
+            color: AppColors.textSecondary,
+          ),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: const Color(0xFFF2F2F7),
+            color: AppColors.inputBackground,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color:
                   _passwordError != null
-                      ? CupertinoColors.destructiveRed
+                      ? AppColors.textOrange
                       : Colors.transparent,
             ),
           ),
@@ -666,29 +660,27 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'تأكيد كلمة المرور',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF1D1D1F),
-          ),
-        ),
+        Text('تأكيد كلمة المرور', style: AppTheme.headline),
         const SizedBox(height: 8),
         CupertinoTextField(
           controller: _confirmPasswordController,
           focusNode: _confirmPasswordFocusNode,
           placeholder: 'أعد إدخال كلمة المرور',
           obscureText: !_isConfirmPasswordVisible,
+          style: GoogleFonts.cairo(fontSize: 16, color: AppColors.textPrimary),
+          placeholderStyle: GoogleFonts.cairo(
+            fontSize: 16,
+            color: AppColors.textSecondary,
+          ),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: const Color(0xFFF2F2F7),
+            color: AppColors.inputBackground,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color:
                   _passwordController.text != _confirmPasswordController.text &&
                           _confirmPasswordController.text.isNotEmpty
-                      ? CupertinoColors.destructiveRed
+                      ? AppColors.textOrange
                       : Colors.transparent,
             ),
           ),

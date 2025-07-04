@@ -79,6 +79,46 @@ class AppTheme {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
+      // Input decoration theme with Cairo font
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.inputBackground,
+        hintStyle: GoogleFonts.cairo(
+          fontSize: 16,
+          color: AppColors.textSecondary,
+          fontWeight: FontWeight.normal,
+        ),
+        labelStyle: GoogleFonts.cairo(
+          fontSize: 16,
+          color: AppColors.textSecondary,
+          fontWeight: FontWeight.normal,
+        ),
+        floatingLabelStyle: GoogleFonts.cairo(
+          fontSize: 14,
+          color: AppColors.primary,
+          fontWeight: FontWeight.w500,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: AppColors.border.withOpacity(0.3)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: AppColors.primary, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: AppColors.textOrange, width: 2),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+      ),
     );
   }
 
@@ -144,6 +184,24 @@ class AppTheme {
     return InputDecoration(
       filled: true,
       fillColor: AppColors.inputBackground,
+      // Add Cairo font for placeholder text
+      hintStyle: GoogleFonts.cairo(
+        fontSize: 16,
+        color: AppColors.textSecondary,
+        fontWeight: FontWeight.normal,
+      ),
+      // Add Cairo font for label text
+      labelStyle: GoogleFonts.cairo(
+        fontSize: 16,
+        color: AppColors.textSecondary,
+        fontWeight: FontWeight.normal,
+      ),
+      // Add Cairo font for floating label
+      floatingLabelStyle: GoogleFonts.cairo(
+        fontSize: 14,
+        color: AppColors.primary,
+        fontWeight: FontWeight.w500,
+      ),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
         borderSide: BorderSide.none,
@@ -157,6 +215,62 @@ class AppTheme {
         borderSide: const BorderSide(color: AppColors.primary, width: 2),
       ),
       errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: AppColors.textOrange, width: 2),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    );
+  }
+
+  // Additional input decoration method for customizable placeholders
+  static InputDecoration getInputDecoration({
+    String? hintText,
+    String? labelText,
+    Widget? prefixIcon,
+    Widget? suffixIcon,
+  }) {
+    return InputDecoration(
+      hintText: hintText,
+      labelText: labelText,
+      prefixIcon: prefixIcon,
+      suffixIcon: suffixIcon,
+      filled: true,
+      fillColor: AppColors.inputBackground,
+      // Cairo font for hint text
+      hintStyle: GoogleFonts.cairo(
+        fontSize: 16,
+        color: AppColors.textSecondary,
+        fontWeight: FontWeight.normal,
+      ),
+      // Cairo font for label text
+      labelStyle: GoogleFonts.cairo(
+        fontSize: 16,
+        color: AppColors.textSecondary,
+        fontWeight: FontWeight.normal,
+      ),
+      // Cairo font for floating label
+      floatingLabelStyle: GoogleFonts.cairo(
+        fontSize: 14,
+        color: AppColors.primary,
+        fontWeight: FontWeight.w500,
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide.none,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide(color: AppColors.border.withOpacity(0.3)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: AppColors.primary, width: 2),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: AppColors.textOrange, width: 2),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
         borderSide: const BorderSide(color: AppColors.textOrange, width: 2),
       ),
