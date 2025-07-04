@@ -4,6 +4,8 @@ promo   =) dofo3at =) dawarat/baramij + limited by time
 
 
 --- prompt ---
+- app name is اكاديمية التعليم المفتوح - open-learning
 - cupertino looking theme
 - use http package
 - use the global token methods
+- respect our theme from: main.dart/app_colors/app_theme files
