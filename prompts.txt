@@ -1,0 +1,9 @@
+course  =) dawarat =) mawad
+program =) baramij =) stacked dawarat anytime
+promo   =) dofo3at =) dawarat/baramij + limited by time 
+
+
+--- prompt ---
+- cupertino looking theme
+- use http package
+- use the global token methods
