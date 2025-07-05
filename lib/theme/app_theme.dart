@@ -28,10 +28,10 @@ class AppTheme {
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColors.primary,
         primary: AppColors.primary,
-        secondary: AppColors.primaryLight,
+        secondary: AppColors.accent,
         surface: AppColors.surface,
         background: AppColors.background,
-        error: AppColors.textOrange,
+        error: Colors.red,
       ),
       // Use Cairo font family from Google Fonts
       fontFamily: GoogleFonts.cairo().fontFamily,
@@ -82,7 +82,7 @@ class AppTheme {
       // Input decoration theme with Cairo font
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.inputBackground,
+        fillColor: AppColors.background,
         hintStyle: GoogleFonts.cairo(
           fontSize: 16,
           color: AppColors.textSecondary,
@@ -112,7 +112,7 @@ class AppTheme {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: AppColors.textOrange, width: 2),
+          borderSide: const BorderSide(color: Colors.red, width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
@@ -165,6 +165,19 @@ class AppTheme {
     color: AppColors.textSecondary,
   );
 
+  // Accent text styles for highlighting
+  static TextStyle get accentText => GoogleFonts.cairo(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: AppColors.accent,
+  );
+
+  static TextStyle get accentTextSmall => GoogleFonts.cairo(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: AppColors.accent,
+  );
+
   // Common decorations
   static BoxDecoration get cardDecoration {
     return BoxDecoration(
@@ -172,7 +185,7 @@ class AppTheme {
       borderRadius: BorderRadius.circular(12),
       boxShadow: [
         BoxShadow(
-          color: AppColors.black.withOpacity(0.1),
+          color: AppColors.grey.withOpacity(0.1),
           blurRadius: 10,
           offset: const Offset(0, 2),
         ),
@@ -183,7 +196,7 @@ class AppTheme {
   static InputDecoration get inputDecoration {
     return InputDecoration(
       filled: true,
-      fillColor: AppColors.inputBackground,
+      fillColor: AppColors.background,
       // Add Cairo font for placeholder text
       hintStyle: GoogleFonts.cairo(
         fontSize: 16,
@@ -216,7 +229,7 @@ class AppTheme {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: AppColors.textOrange, width: 2),
+        borderSide: const BorderSide(color: Colors.red, width: 2),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     );
@@ -235,7 +248,7 @@ class AppTheme {
       prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
       filled: true,
-      fillColor: AppColors.inputBackground,
+      fillColor: AppColors.background,
       // Cairo font for hint text
       hintStyle: GoogleFonts.cairo(
         fontSize: 16,
@@ -268,13 +281,41 @@ class AppTheme {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: AppColors.textOrange, width: 2),
+        borderSide: const BorderSide(color: Colors.red, width: 2),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: AppColors.textOrange, width: 2),
+        borderSide: const BorderSide(color: Colors.red, width: 2),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     );
   }
+
+  // Button styles
+  static ButtonStyle get primaryButtonStyle => ElevatedButton.styleFrom(
+    backgroundColor: AppColors.primary,
+    foregroundColor: AppColors.white,
+    textStyle: GoogleFonts.cairo(fontSize: 16, fontWeight: FontWeight.w600),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+  );
+
+  static ButtonStyle get accentButtonStyle => ElevatedButton.styleFrom(
+    backgroundColor: AppColors.accent,
+    foregroundColor: AppColors.white,
+    textStyle: GoogleFonts.cairo(fontSize: 16, fontWeight: FontWeight.w600),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+  );
+
+  static ButtonStyle get outlineButtonStyle => OutlinedButton.styleFrom(
+    foregroundColor: AppColors.primary,
+    side: const BorderSide(color: AppColors.primary),
+    textStyle: GoogleFonts.cairo(fontSize: 16, fontWeight: FontWeight.w600),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+  );
 }
+
+
+final fontFamily = GoogleFonts.cairo().fontFamily;

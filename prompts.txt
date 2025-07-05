@@ -1,11 +1,22 @@
+
+--- prompt ---
+
+# UI related
+- arabic app with relegious islamic theme
+- app name is اكاديمية التعليم المفتوح - open-learning
+- cupertino looking theme
+- respect our theme from: main.dart/app_colors/app_theme files
+- respect the DRY
+- we only use lucide_icons_flutter instead of Icons.xxxx
+
+# server related
+- use the global token methods
+- use http package
+
+
+
+# my notes
 course  =) dawarat =) mawad
 program =) baramij =) stacked dawarat anytime
 promo   =) dofo3at =) dawarat/baramij + limited by time 
 
-
---- prompt ---
-- app name is اكاديمية التعليم المفتوح - open-learning
-- cupertino looking theme
-- use http package
-- use the global token methods
-- respect our theme from: main.dart/app_colors/app_theme files
