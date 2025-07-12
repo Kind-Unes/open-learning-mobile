@@ -6,7 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:pinput/pinput.dart';
 import 'package:open_learning/theme/app_colors.dart';
-import 'package:open_learning/theme/islamic_components.dart';
+import 'package:open_learning/widgets/islamic_components.dart';
 import 'package:open_learning/widgets/islamic_patterns.dart';
 
 class OtpVerificationScreen extends StatefulWidget {

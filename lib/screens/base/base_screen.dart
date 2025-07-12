@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:open_learning/screens/profile/profile_screen.dart';
 import 'package:open_learning/theme/app_colors.dart';
 import 'package:open_learning/widgets/islamic_patterns.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
@@ -22,13 +23,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   late AnimationController _appBarController;
   late AnimationController _patternController;
   late AnimationController _breathController;
-  late AnimationController _glowController;
 
   // Animations
   late Animation<double> _appBarAnimation;
   late Animation<double> _patternAnimation;
   late Animation<double> _breathAnimation;
-  late Animation<double> _glowAnimation;
 
   final PageController _pageController = PageController();
 
@@ -55,11 +54,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       vsync: this,
     );
 
-    _glowController = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    );
-
     _appBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _appBarController, curve: Curves.easeOutCubic),
     );
@@ -71,17 +65,12 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     _breathAnimation = Tween<double>(begin: 0.95, end: 1.05).animate(
       CurvedAnimation(parent: _breathController, curve: Curves.easeInOut),
     );
-
-    _glowAnimation = Tween<double>(begin: 0.8, end: 1.2).animate(
-      CurvedAnimation(parent: _glowController, curve: Curves.easeInOut),
-    );
   }
 
   void _startAnimations() {
     _appBarController.forward();
     _patternController.repeat();
     _breathController.repeat(reverse: true);
-    _glowController.repeat(reverse: true);
   }
 
   @override
@@ -89,7 +78,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     _appBarController.dispose();
     _patternController.dispose();
     _breathController.dispose();
-    _glowController.dispose();
     _pageController.dispose();
     super.dispose();
   }
@@ -148,20 +136,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   Widget _buildBackgroundPattern() {
-    return Positioned.fill(
-      child: AnimatedBuilder(
-        animation: Listenable.merge([_patternAnimation, _breathAnimation]),
-        builder: (context, child) {
-          return CustomPaint(
-            painter: IslamicGeometricPatternPainter(
-              _patternAnimation.value,
-              _breathAnimation.value,
-              0.0,
-            ),
-          );
-        },
-      ),
-    );
+    return BackgroundPattern();
   }
 
   Widget _buildCustomAppBar() {
@@ -287,49 +262,41 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                         ),
 
                         // Action Buttons
-                        AnimatedBuilder(
-                          animation: _glowAnimation,
-                          builder: (context, child) {
-                            return Transform.scale(
-                              scale: _glowAnimation.value,
-                              child: Container(
-                                width: 45.w,
-                                height: 45.w,
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.white.withOpacity(0.2),
-                                      Colors.white.withOpacity(0.1),
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(15.r),
-                                  border: Border.all(
-                                    color: Colors.white.withOpacity(0.3),
-                                    width: 1.5,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.white.withOpacity(0.2),
-                                      blurRadius: 10,
-                                      spreadRadius: 2,
-                                    ),
-                                  ],
-                                ),
-                                child: Icon(
-                                  LucideIcons.bell,
-                                  color: Colors.white,
-                                  size: 18.r,
-                                ),
+                        Container(
+                          width: 45.w,
+                          height: 45.w,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.white.withOpacity(0.2),
+                                Colors.white.withOpacity(0.1),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(15.r),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.3),
+                              width: 1.5,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.white.withOpacity(0.2),
+                                blurRadius: 10,
+                                spreadRadius: 2,
                               ),
-                            );
-                          },
+                            ],
+                          ),
+                          child: Icon(
+                            LucideIcons.bell,
+                            color: Colors.white,
+                            size: 18.r,
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
               ],
-            )
+            ),
           ),
         );
       },
@@ -339,13 +306,13 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   Widget _buildAnimatedBottomNavigation() {
     // Define icon list for the 4 tabs (Settings, Explore, Library, My Content)
     final iconList = [
-      LucideIcons.settings,
-      LucideIcons.compass,
-      LucideIcons.bookOpen,
-      LucideIcons.bookmark,
+      LucideIcons.settings, // الإعدادات (Settings)
+      LucideIcons.book, // الدورات (Courses)
+      LucideIcons.graduationCap, // البرامج (Programs)
+      LucideIcons.users, // الدفعات (Batches/Cohorts)
     ];
 
-    final tabLabels = ['الإعدادات', 'استكشف', 'المكتبة', 'محتواي'];
+    final tabLabels = ['الإعدادات', 'الدورات', 'البرامج', 'الدفعات'];
 
     return AnimatedBottomNavigationBar.builder(
       itemCount: iconList.length,
@@ -488,7 +455,12 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                       subtitle: 'إدارة بياناتك الشخصية',
                       onTap: () {
                         // Navigate to profile screen
-                        print('Navigate to Profile');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfileScreen(),
+                          ),
+                        );
                       },
                     ),
                     _buildSettingsItem(
@@ -579,129 +551,121 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   Widget _buildProfileHeader() {
-    return AnimatedBuilder(
-      animation: _breathAnimation,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _breathAnimation.value,
-          child: Container(
-            padding: EdgeInsets.all(24.w),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppColors.primary,
-                  AppColors.primary.withOpacity(0.9),
-                  AppColors.accent.withOpacity(0.8),
-                ],
-              ),
+    return Container(
+      padding: EdgeInsets.all(24.w),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.primary,
+            AppColors.primary.withOpacity(0.9),
+            AppColors.accent.withOpacity(0.8),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(25.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withOpacity(0.3),
+            blurRadius: 25,
+            offset: const Offset(0, 10),
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          // Background Pattern
+          Positioned.fill(
+            child: ClipRRect(
               borderRadius: BorderRadius.circular(25.r),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.primary.withOpacity(0.3),
-                  blurRadius: 25,
-                  offset: const Offset(0, 10),
-                  spreadRadius: 0,
+              child: CustomPaint(
+                painter: IslamicCardPatternPainter(
+                  _patternAnimation.value,
+                  1.0, // Remove breath animation, use constant value
                 ),
-              ],
+              ),
             ),
-            child: Stack(
-              children: [
-                // Background Pattern
-                Positioned.fill(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(25.r),
-                    child: CustomPaint(
-                      painter: IslamicCardPatternPainter(
-                        _patternAnimation.value,
-                        _breathAnimation.value,
-                      ),
-                    ),
+          ),
+
+          // Profile Content
+          Row(
+            children: [
+              // Profile Avatar
+              Container(
+                width: 80.w,
+                height: 80.w,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.white, Colors.white.withOpacity(0.9)],
                   ),
+                  borderRadius: BorderRadius.circular(20.r),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.3),
+                    width: 2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 15,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
                 ),
+                child: Icon(
+                  LucideIcons.user,
+                  size: 32.r,
+                  color: AppColors.primary,
+                ),
+              ),
 
-                // Profile Content
-                Row(
+              Gap(20.w),
+
+              // Profile Info
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Profile Avatar
-                    Container(
-                      width: 80.w,
-                      height: 80.w,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Colors.white, Colors.white.withOpacity(0.9)],
-                        ),
-                        borderRadius: BorderRadius.circular(20.r),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.3),
-                          width: 2,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 15,
-                            offset: const Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                      child: Icon(
-                        LucideIcons.user,
-                        size: 32.r,
-                        color: AppColors.primary,
+                    Text(
+                      'مرحباً بك',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.white.withOpacity(0.9),
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-
-                    Gap(20.w),
-
-                    // Profile Info
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'مرحباً بك',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: Colors.white.withOpacity(0.9),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Gap(4.h),
-                          Text(
-                            'المستخدم الكريم',
-                            style: TextStyle(
-                              fontSize: 22.sp,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w800,
-                              shadows: [
-                                Shadow(
-                                  color: Colors.black.withOpacity(0.3),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Gap(4.h),
-                          Text(
-                            'طالب متميز',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: Colors.white.withOpacity(0.8),
-                              fontWeight: FontWeight.w600,
-                            ),
+                    Gap(4.h),
+                    Text(
+                      'المستخدم الكريم',
+                      style: TextStyle(
+                        fontSize: 22.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
                           ),
                         ],
+                      ),
+                    ),
+                    Gap(4.h),
+                    Text(
+                      'طالب متميز',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.white.withOpacity(0.8),
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
@@ -804,7 +768,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
               // Arrow Icon
               Icon(
-                LucideIcons.chevronRight,
+                LucideIcons.chevronLeft,
                 size: 16.r,
                 color: AppColors.textSecondary,
               ),
@@ -816,64 +780,56 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   Widget _buildLogoutButton() {
-    return AnimatedBuilder(
-      animation: _glowAnimation,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _glowAnimation.value,
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.red.shade400,
+            Colors.red.shade500,
+            Colors.red.shade600,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.red.withOpacity(0.3),
+            blurRadius: 25,
+            offset: const Offset(0, 10),
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            // Show logout confirmation dialog
+            _showLogoutDialog();
+          },
+          borderRadius: BorderRadius.circular(20.r),
           child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.red.shade400,
-                  Colors.red.shade500,
-                  Colors.red.shade600,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(20.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.red.withOpacity(0.3),
-                  blurRadius: 25,
-                  offset: const Offset(0, 10),
-                  spreadRadius: 0,
+            padding: EdgeInsets.symmetric(vertical: 20.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(LucideIcons.logOut, size: 20.r, color: Colors.white),
+                Gap(12.w),
+                Text(
+                  'تسجيل الخروج',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
                 ),
               ],
             ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {
-                  // Show logout confirmation dialog
-                  _showLogoutDialog();
-                },
-                borderRadius: BorderRadius.circular(20.r),
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 20.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(LucideIcons.logOut, size: 20.r, color: Colors.white),
-                      Gap(12.w),
-                      Text(
-                        'تسجيل الخروج',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -1173,64 +1129,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 }
 
-// Custom Painters for Islamic Patterns
-
-class IslamicBackgroundPatternPainter extends CustomPainter {
-  final double animationValue;
-  final double breathValue;
-
-  IslamicBackgroundPatternPainter(this.animationValue, this.breathValue);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint =
-        Paint()
-          ..color = AppColors.primary.withOpacity(0.02)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 1.0;
-
-    // Draw subtle background pattern
-    const gridSize = 80.0;
-    final offsetX = (animationValue * gridSize * 0.1) % gridSize;
-    final offsetY = (animationValue * gridSize * 0.1) % gridSize;
-
-    for (double x = -offsetX; x < size.width + gridSize; x += gridSize) {
-      for (double y = -offsetY; y < size.height + gridSize; y += gridSize) {
-        final centerX = x + gridSize / 2;
-        final centerY = y + gridSize / 2;
-
-        _drawSubtleDiamond(
-          canvas,
-          Offset(centerX, centerY),
-          15 * breathValue,
-          paint,
-        );
-      }
-    }
-  }
-
-  void _drawSubtleDiamond(
-    Canvas canvas,
-    Offset center,
-    double size,
-    Paint paint,
-  ) {
-    final path = Path();
-    final halfSize = size / 2;
-
-    path.moveTo(center.dx, center.dy - halfSize);
-    path.lineTo(center.dx + halfSize, center.dy);
-    path.lineTo(center.dx, center.dy + halfSize);
-    path.lineTo(center.dx - halfSize, center.dy);
-    path.close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
-}
-
 class IslamicAppBarPatternPainter extends CustomPainter {
   final double animationValue;
   final double breathValue;
@@ -1281,82 +1179,27 @@ class IslamicAppBarPatternPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
-class IslamicNavPatternPainter extends CustomPainter {
-  final double animationValue;
-  final int selectedIndex;
+class BackgroundPattern extends StatelessWidget {
+  final Color? tintColor;
+  final double opacity;
+  final BlendMode blendMode;
 
-  IslamicNavPatternPainter(this.animationValue, this.selectedIndex);
+  const BackgroundPattern({
+    super.key,
+    this.tintColor = const Color(0xFFF3FAFA),
+    this.opacity = 0.15,
+    this.blendMode = BlendMode.modulate,
+  });
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final paint =
-        Paint()
-          ..color = AppColors.primary.withOpacity(0.05)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 1.0;
-
-    // Draw subtle wave pattern
-    final path = Path();
-    for (double x = 0; x <= size.width; x += 6) {
-      final y = size.height / 2 + 8 * math.sin((x / 30) + animationValue * 3);
-
-      if (x == 0) {
-        path.moveTo(x, y);
-      } else {
-        path.lineTo(x, y);
-      }
-    }
-
-    canvas.drawPath(path, paint);
-
-    // Draw selection indicator glow
-    final selectedX = (selectedIndex + 0.5) * (size.width / 3);
-    canvas.drawCircle(
-      Offset(selectedX, size.height / 2),
-      25,
-      Paint()
-        ..color = AppColors.primary.withOpacity(0.1)
-        ..style = PaintingStyle.fill,
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: Image.asset(
+        'assets/images/islamic-pattern.png',
+        fit: BoxFit.cover,
+        color: tintColor?.withOpacity(opacity),
+        colorBlendMode: blendMode,
+      ),
     );
   }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
-}
-
-class IslamicButtonPatternPainter extends CustomPainter {
-  final double animationValue;
-
-  IslamicButtonPatternPainter(this.animationValue);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint =
-        Paint()
-          ..color = AppColors.accent.withOpacity(0.3)
-          ..style = PaintingStyle.fill;
-
-    // Draw concentric circles
-    for (double r = 10; r < size.width / 2; r += 10) {
-      canvas.drawCircle(
-        size.center(Offset.zero),
-        r + animationValue * 5,
-        paint,
-      );
-    }
-
-    // Draw decorative lines
-    paint
-      ..color = Colors.white.withOpacity(0.2)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.2;
-
-    for (double i = 0; i < size.width; i += 15) {
-      canvas.drawLine(Offset(i, 0), Offset(size.width - i, size.height), paint);
-      canvas.drawLine(Offset(i, size.height), Offset(size.width - i, 0), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }

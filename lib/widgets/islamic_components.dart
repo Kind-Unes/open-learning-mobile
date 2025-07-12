@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -128,4 +129,148 @@ class IslamicComponents {
       ),
     );
   }
+
+  /// Creates a Google authentication button matching Google's official design
+  static Widget buildGoogleButton({
+    required String text,
+    required VoidCallback onPressed,
+    bool isLoading = false,
+    double? width,
+    double? height,
+  }) {
+    return Container(
+      width: width ?? double.infinity,
+      height: height ?? 56.h,
+      child: OutlinedButton(
+        onPressed: isLoading ? null : onPressed,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: Colors.white,
+          side: BorderSide(color: Colors.grey.shade300, width: 1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        ),
+        child:
+            isLoading
+                ? SizedBox(
+                  width: 20.w,
+                  height: 20.w,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.grey.shade600,
+                  ),
+                )
+                : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Google logo SVG recreation
+                    Container(
+                      width: 20.w,
+                      height: 20.w,
+                      child: CustomPaint(painter: GoogleLogoPainter()),
+                    ),
+                    Gap(12.w),
+                    Text(
+                      text,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey.shade700,
+                        letterSpacing: 0.25,
+                      ),
+                    ),
+                  ],
+                ),
+      ),
+    );
+  }
+}
+
+/// Custom painter for Google logo
+class GoogleLogoPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final double centerX = size.width / 2;
+    final double centerY = size.height / 2;
+    final double radius = size.width * 0.4;
+
+    // Google colors
+    final redPaint = Paint()..color = const Color(0xFFEA4335);
+    final yellowPaint = Paint()..color = const Color(0xFFFBBC05);
+    final greenPaint = Paint()..color = const Color(0xFF34A853);
+    final bluePaint = Paint()..color = const Color(0xFF4285F4);
+
+    // Draw the simplified Google "G"
+
+    // Blue arc (main body of G)
+    final blueRect = Rect.fromCircle(
+      center: Offset(centerX, centerY),
+      radius: radius,
+    );
+    canvas.drawArc(
+      blueRect,
+      -math.pi / 2, // Start at top
+      math.pi, // Draw 180 degrees
+      false,
+      Paint()
+        ..color = bluePaint.color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = size.width * 0.15,
+    );
+
+    // Red arc (top right)
+    canvas.drawArc(
+      blueRect,
+      -math.pi / 2, // Start at top
+      math.pi / 3, // Draw 60 degrees
+      false,
+      Paint()
+        ..color = redPaint.color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = size.width * 0.15,
+    );
+
+    // Yellow arc (top left)
+    canvas.drawArc(
+      blueRect,
+      -math.pi / 2 + math.pi / 3, // Continue from red
+      math.pi / 3, // Draw 60 degrees
+      false,
+      Paint()
+        ..color = yellowPaint.color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = size.width * 0.15,
+    );
+
+    // Green arc (bottom left)
+    canvas.drawArc(
+      blueRect,
+      -math.pi / 2 + 2 * math.pi / 3, // Continue from yellow
+      math.pi / 3, // Draw 60 degrees
+      false,
+      Paint()
+        ..color = greenPaint.color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = size.width * 0.15,
+    );
+
+    // Draw the horizontal line of the G
+    final lineStart = Offset(centerX, centerY);
+    final lineEnd = Offset(centerX + radius * 0.6, centerY);
+    canvas.drawLine(
+      lineStart,
+      lineEnd,
+      Paint()
+        ..color = bluePaint.color
+        ..strokeWidth = size.width * 0.15
+        ..strokeCap = StrokeCap.round,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

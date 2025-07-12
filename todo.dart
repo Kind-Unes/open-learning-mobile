@@ -19,3 +19,6 @@
 // tasks:
 // todo: reduce the padding for the splash screen to 10%
 // todo: a prompt from the auth screen/ unify the background
+// TODO: change the islamic pattern bs
+// TODO: add wlecome to X
+
